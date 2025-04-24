@@ -39,14 +39,15 @@ axVol.tick_params(axis='x', rotation=45)
 
 #fast fourier transform and plotting
 def plot_fft(data, title):
-    data['fft'] = np.fft.fft(data['close'])
-    data['freq'] = np.fft.fftfreq(len(data), d=1/60)  # Assuming data is sampled every minute
+    data['fft'] = np.fft.fft(data['Volume USD'])
+    data['freq'] = np.fft.fftfreq(len(data), d=1)  # Assuming data is sampled every minute
     plt.figure(figsize=(12, 6))
-    plt.plot(data['freq'], np.abs(data['fft']))
+    plt.plot(data['freq'], np.abs(data['fft']), color='red', alpha=0.5)
+    plt.xscale('log')
     plt.title(title)
     plt.xlabel('Frequency')
     plt.ylabel('Magnitude')
-    plt.xlim(0, 0.02)
+
     plt.grid()
     plt.show()
 # %%
