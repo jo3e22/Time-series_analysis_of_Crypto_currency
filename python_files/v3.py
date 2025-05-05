@@ -1,25 +1,25 @@
-#%%
+#%%  Import modules
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 from scipy.signal import correlate
-from statsmodels.tsa.stattools import grangercausalitytests
+#from statsmodels.tsa.stattools import grangercausalitytests
 import smoothing as mySm # Custom smoothing module
 
 directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../ftx_minute_csv/'))
 data_files = os.listdir(directory)
 column_names = ['unix', 'date', 'symbol', 'open', 'high', 'low', 'close', 'Volume BTC', 'Volume USD']
 
+#%%  set up data arrays
 arr_o_data = []
 for file in data_files:
     data = pd.read_csv(os.path.join(directory, file), names=column_names, header=0, low_memory=False)
     data['unix'] = pd.to_datetime(data['unix'], unit='ms')
     arr_o_data.append(data)
 
-
-# Resampling and Visualization
+#%%  define function for plotting
 def resample_and_plot(dfs, lambda_=10):
     fig, (ax1, ax2, ax3, ax4) = plt.subplots(4, 1, figsize=(12, 16))
     for df in dfs:
@@ -78,10 +78,7 @@ def resample_and_plot(dfs, lambda_=10):
     plt.show()
 
 
-
-#resample_and_plot(arr_o_data, 5)
-#resample_and_plot(arr_o_data, 10)
-#resample_and_plot(arr_o_data, 15)
-resample_and_plot(arr_o_data, 20)
+#%%  Run
+resample_and_plot(arr_o_data, 50)
 
 # %%
