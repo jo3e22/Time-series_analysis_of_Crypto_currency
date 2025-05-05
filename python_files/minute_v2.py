@@ -5,6 +5,7 @@ import seaborn as sns
 import os
 from scipy.signal import correlate
 from statsmodels.tsa.stattools import grangercausalitytests
+import smoothing as mySm # Custom smoothing module
 
 directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../ftx_minute_csv/'))
 data_files = os.listdir(directory)
