@@ -176,7 +176,7 @@ def calculate_time_lag(series1, series2, max_lag=100):
         lag_array: Array of lag values
     """
     # Compute cross-correlation
-    cross_corr = correlate(series1, series2, mode='full')
+    cross_corr = correlate(series1, series2, mode='full') / len(series1)
     
     # Get lag array
     lag_array = np.arange(-len(series1) + 1, len(series2))
@@ -292,7 +292,7 @@ def introduce_gaps(series, gap_percentage, periodic=True):
 
 
 #%% Analyze impact of gaps on correlation
-def analyze_gap_impact(df, columns, gap_percentages=[0.05, 0.1, 0.2, 0.3]):
+def analyse_gap_impact(df, columns, gap_percentages=[0.05, 0.1, 0.2, 0.3]):
     """
     Function: Analyze how data gaps affect correlation and lag detection
     Inputs:
@@ -427,7 +427,8 @@ def analyze_crypto_time_series(max_rows=5000, lambda_=10):
     
     # Calculate correlations
     print("Calculating correlations...")
-    pearson_corr, spearman_corr = calculate_correlations(normalized_df, norm_columns)
+    #pearson_corr, spearman_corr = calculate_correlations(normalized_df, norm_columns)
+    pearson_corr, spearman_corr = calculate_correlations(normalized_df, smooth_columns)
     
     # Plot correlation matrices
     print("Plotting correlation matrices...")
@@ -473,7 +474,7 @@ def analyze_crypto_time_series(max_rows=5000, lambda_=10):
     # Analyze impact of gaps
     print("\nAnalyzing impact of data gaps...")
     # Use first two cryptocurrencies for gap analysis
-    gap_results = analyze_gap_impact(normalized_df, norm_columns[:2])
+    gap_results = analyse_gap_impact(normalized_df, norm_columns[:2])
     
     # Plot gap impact
     plot_gap_impact(gap_results, 'corr')
@@ -491,7 +492,7 @@ def analyze_crypto_time_series(max_rows=5000, lambda_=10):
 
 #%% Run the analysis
 if __name__ == "__main__":
-    results = analyze_crypto_time_series(max_rows=5000, lambda_=50)
+    results = analyze_crypto_time_series(max_rows=15000, lambda_=50)
     
     # Display summary statistics for the report
     print("\nSummary Statistics for Report:")
@@ -513,4 +514,5 @@ if __name__ == "__main__":
             direction = "No clear lead-lag relationship"
         
         print(f"{pair}: Lag = {data['lag']} minutes, Direction: {direction}")
+
 # %%
